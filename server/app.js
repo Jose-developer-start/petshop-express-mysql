@@ -1,33 +1,20 @@
 import express from "express"
-import mysql from "mysql"
-
-
+import router from "./routes/roles.js";
+import cors from "cors"
+import env from "dotenv"
+//ENV
+env.config()
 //APP MAIN 
 const app = express();
-//CONECTION DATABASE
-const MYSQL = mysql.createConnection({
-    host: 'localhost',
-    database: 'petshop',
-    user: 'root',
-    'password': ''
-})
-let connectMySQL = MYSQL.connect((err)=>{
-    if(err) console.log('Error: ' + err) //Output error
-    console.log('Database connected')
-})
-//En desarrollo
-MYSQL.query('SELECT * FROM roles', (err,results)=>{
-    if(err) console.log('Error ' + err)
 
-    console.log(results)
-})
-
-//END DEV
-
+//Middleware
+app.use(express.json())
+app.use(cors({origin: "*"}))
 //Config
-app.set('PORT', 5000 || process.env.PORT)
+app.set('PORT', process.env.SERVER_PORT)
 
-
+//Routes
+app.use('/api', router)
 
 
 //Servidor
